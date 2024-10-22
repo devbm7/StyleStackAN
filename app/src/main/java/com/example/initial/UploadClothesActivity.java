@@ -121,7 +121,10 @@ public class UploadClothesActivity extends AppCompatActivity {
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
                         String userId = user.getUid();
+                        long timestamp = System.currentTimeMillis();
+                        String generatedId = userId + "_" + timestamp;
                         Map<String, Object> clothesData = new HashMap<>();
+                        clothesData.put("id", imageId);
                         clothesData.put("name", clothesName);
                         clothesData.put("category", clothesCategory);
                         clothesData.put("imageUrl", uri.toString());
