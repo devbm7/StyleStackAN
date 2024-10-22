@@ -21,26 +21,26 @@
         android:layout_margin="16dp"
         android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/sendToLaundryButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="Send to Laundry"
-        android:layout_marginBottom="8dp" />
+<!--    <Button-->
+<!--        android:id="@+id/sendToLaundryButton"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:text="Send to Laundry"-->
+<!--        android:layout_marginBottom="8dp" />-->
 
-    <Button
-        android:id="@+id/viewInLaundryButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="View In Laundry"
-        android:layout_marginBottom="8dp" />
+<!--    <Button-->
+<!--        android:id="@+id/viewInLaundryButton"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:text="View In Laundry"-->
+<!--        android:layout_marginBottom="8dp" />-->
 
-    <Button
-        android:id="@+id/takeBackFromLaundryButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="Take Back from Laundry" />
+<!--    <Button-->
+<!--        android:id="@+id/takeBackFromLaundryButton"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:text="Take Back from Laundry" />-->
 </LinearLayout>
