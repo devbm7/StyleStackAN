@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,6 +59,18 @@ public class ProfileActivity extends AppCompatActivity {
         storageReference = storage.getReference();
 
         loadUserProfile();
+
+
+        // Set up the toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Set the title of the toolbar
+        getSupportActionBar().setTitle("Profile");
+
+        // Enable the back button (optional)
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         uploadImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,5 +179,11 @@ public class ProfileActivity extends AppCompatActivity {
                 .set(profileData)
                 .addOnSuccessListener(aVoid -> Toast.makeText(ProfileActivity.this, "Profile updated successfully", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Failed to update profile", Toast.LENGTH_SHORT).show());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
