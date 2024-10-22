@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
+import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -21,6 +21,14 @@ public class DashboardActivity extends AppCompatActivity {
         manageLaundryButton = findViewById(R.id.manageLaundryButton);
         removeClothesButton = findViewById(R.id.removeClothesButton);
         profileButton = findViewById(R.id.profileButton);
+
+
+        // Set up the toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Set the title of the toolbar
+        getSupportActionBar().setTitle("Style Stack");
 
 
         uploadClothesButton.setOnClickListener(new View.OnClickListener() {

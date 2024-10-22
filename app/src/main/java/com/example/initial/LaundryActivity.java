@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,6 +42,14 @@ public class LaundryActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         loadClothes();
+
+        // Set up the toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Set the title of the toolbar
+        getSupportActionBar().setTitle("Laundry Management");
+
     }
 
     private void loadClothes() {
@@ -85,5 +94,11 @@ public class LaundryActivity extends AppCompatActivity {
                     laundryAdapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> Toast.makeText(LaundryActivity.this, "Failed to update clothes", Toast.LENGTH_SHORT).show());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

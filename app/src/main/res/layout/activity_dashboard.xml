@@ -3,15 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="0dp">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
         android:id="@+id/uploadClothesButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:text="Upload Clothes"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="32dp" />
@@ -20,6 +27,7 @@
         android:id="@+id/viewClothesButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:text="View Clothes"
         app:layout_constraintTop_toBottomOf="@+id/uploadClothesButton"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +38,7 @@
         android:id="@+id/manageLaundryButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:text="Manage Laundry"
         app:layout_constraintTop_toBottomOf="@+id/viewClothesButton"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,6 +49,7 @@
         android:id="@+id/removeClothesButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:text="Remove Clothes"
         app:layout_constraintTop_toBottomOf="@id/manageLaundryButton"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,6 +60,7 @@
         android:id="@+id/profileButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:text="Profile"
         app:layout_constraintTop_toBottomOf="@id/removeClothesButton"
         app:layout_constraintStart_toStartOf="parent"
