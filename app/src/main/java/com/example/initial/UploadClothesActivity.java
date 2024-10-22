@@ -144,6 +144,3 @@ public class UploadClothesActivity extends AppCompatActivity {
     }
 }
 
-
-//public class UploadClothesActivity {
-//}

@@ -61,7 +61,3 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 }
-
-
-//public class DashboardActivity {
-//}

@@ -96,7 +96,3 @@ public class Clothes {
         this.selected = selected;
     }
 }
-
-
-//public class Clothes {
-//}

@@ -57,6 +57,3 @@ public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.LaundryV
         }
     }
 }
-
-//public class LaundryAdapter {
-//}

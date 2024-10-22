@@ -64,7 +64,3 @@ public class ViewClothesActivity extends AppCompatActivity {
     }
 }
 
-
-
-//public class ViewClothesActivity {
-//}

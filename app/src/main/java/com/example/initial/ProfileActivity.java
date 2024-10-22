@@ -168,6 +168,3 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Failed to update profile", Toast.LENGTH_SHORT).show());
     }
 }
-
-//public class ProfileActivity {
-//}
