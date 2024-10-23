@@ -12,6 +12,17 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <ImageView
+        android:id="@+id/loginLogo"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_margin="32dp"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/sslogo"/>
+
 
     <EditText
         android:id="@+id/emailEditText"
@@ -37,14 +48,26 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Login"
+        android:textSize="20sp"
         android:layout_marginBottom="8dp" />
 
-    <Button
-        android:id="@+id/registerButton"
-        android:layout_width="match_parent"
+<!--    <Button-->
+<!--        android:id="@+id/registerButton"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:text="Register"-->
+<!--        android:textSize="20sp"/>-->
+
+    <TextView
+        android:id="@+id/registerLink"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="Register" />
+        android:layout_marginTop="12dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Don't have an account? Sign up"
+        android:textColor="@color/ggreen" />
+
 
     <TextView
         android:id="@+id/errorText"

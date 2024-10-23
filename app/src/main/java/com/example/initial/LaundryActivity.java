@@ -50,6 +50,10 @@ public class LaundryActivity extends AppCompatActivity {
         // Set the title of the toolbar
         getSupportActionBar().setTitle("Laundry Management");
 
+        // Enable the back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
     }
 
     private void loadClothes() {

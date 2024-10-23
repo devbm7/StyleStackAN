@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
@@ -16,7 +17,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText emailEditText, passwordEditText;
-    private Button loginButton, registerButton;
+    private Button loginButton;
+    private TextView registerLink;
     private FirebaseAuth mAuth;
 
     @Override
@@ -29,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
-        registerButton = findViewById(R.id.registerButton);
+        registerLink = findViewById(R.id.registerLink);
 
 
         // Set up the toolbar
@@ -47,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
+        registerLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));

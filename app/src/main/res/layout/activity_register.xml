@@ -12,6 +12,17 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <ImageView
+        android:id="@+id/registerLogo"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_margin="32dp"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/sslogo"/>
+
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="match_parent"
@@ -35,7 +46,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Register" />
+        android:text="Register"
+        android:textSize="20sp"/>
 
     <TextView
         android:id="@+id/errorText"
