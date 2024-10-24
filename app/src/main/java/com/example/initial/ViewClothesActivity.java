@@ -33,7 +33,7 @@ public class ViewClothesActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         clothesList = new ArrayList<>();
-        clothesAdapter = new ClothesAdapter(clothesList);
+        clothesAdapter = new ClothesAdapter(this, clothesList);
         recyclerView.setAdapter(clothesAdapter);
 
         mAuth = FirebaseAuth.getInstance();

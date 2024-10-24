@@ -30,5 +30,6 @@
         <activity android:name=".UploadClothesActivity"/>
         <activity android:name=".RemoveClothesActivity"/>
         <activity android:name=".ProfileActivity"/>
+        <activity android:name=".ClothesDetailsActivity" />
     </application>
 </manifest>
