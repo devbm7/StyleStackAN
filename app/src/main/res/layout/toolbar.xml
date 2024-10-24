@@ -15,5 +15,5 @@
 <!--        android:layout_height="wrap_content"-->
 <!--        android:contentDescription="TODO0"-->
 <!--        android:src="@mipmap/logo_round"-->
-<!--        android:layout_gravity="end"/>-->
+<!--        android:layout_gravity="start"/>-->
 </androidx.appcompat.widget.Toolbar>
