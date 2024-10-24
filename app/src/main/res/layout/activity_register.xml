@@ -50,6 +50,15 @@
         android:textSize="20sp"/>
 
     <TextView
+        android:id="@+id/loginLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="12dp"
+        android:text="Already have an account? Sign In."
+        android:textColor="@color/ggreen"/>
+
+    <TextView
         android:id="@+id/errorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
@@ -18,6 +19,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private EditText emailEditText, passwordEditText;
     private Button registerButton;
+    private TextView loginLink;
     private FirebaseAuth mAuth;
 
     @Override
@@ -30,7 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         registerButton = findViewById(R.id.registerButton);
-
+        loginLink = findViewById(R.id.loginLink);
 
         // Set up the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -44,6 +46,13 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 registerUser();
+            }
+        });
+
+        loginLink.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             }
         });
     }
