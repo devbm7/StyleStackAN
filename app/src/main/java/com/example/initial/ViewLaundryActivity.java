@@ -49,7 +49,7 @@ public class ViewLaundryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Set the title of the toolbar
-        getSupportActionBar().setTitle("View Clothes");
+        getSupportActionBar().setTitle("View Laundry Clothes");
 
         // Enable the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
