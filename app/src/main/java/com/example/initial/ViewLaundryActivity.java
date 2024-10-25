@@ -99,6 +99,3 @@ public class ViewLaundryActivity extends AppCompatActivity {
         }
     }
 }
-
-//public class ViewLaundryActivity {
-//}

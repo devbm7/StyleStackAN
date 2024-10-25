@@ -46,6 +46,3 @@ public class ClothesDetailsActivity extends AppCompatActivity {
         return true;
     }
 }
-
-//public class ClothesDetailsActivity {
-//}
