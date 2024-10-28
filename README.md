@@ -1,4 +1,4 @@
-# Clothes Management Android App
+# Style Stack
 
 A clothes management Android application that allows users to organize their wardrobe, manage clothes in laundry, and update profile information. This app provides users with functionalities to upload, view, and remove clothes, manage their laundry, and view profile details. Built with Firebase for real-time database, storage, and authentication support.
 
@@ -44,7 +44,7 @@ Include screenshots of the app interface here (e.g., login, add clothes, view cl
     ├── app/
     │   ├── src/
     │   │   ├── main/
-    │   │   │   ├── java/com/example/clothesmanager/
+    │   │   │   ├── java/com/example/initial/
     │   │   │   │   ├── Clothes.java               # Model for clothes items
     │   │   │   │   ├── ClothesAdapter.java        # Adapter for displaying clothes in RecyclerView
     │   │   │   │   ├── DashboardActivity.java     # Main dashboard screen with navigation options
@@ -78,7 +78,7 @@ Include screenshots of the app interface here (e.g., login, add clothes, view cl
 1. **Clone the Repository**: Clone this repository to your local machine.
 
    ```bash
-   git clone https://github.com/yourusername/clothes-management-app.git
+   git clone https://github.com/devbm7/StyleStackAN.git
    ```
 
 2. **Open in Android Studio**: Launch Android Studio and open the cloned project.
