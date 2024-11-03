@@ -17,28 +17,38 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
+
+
 
 public class ProfileActivity extends AppCompatActivity {
 
     private EditText firstNameEditText, lastNameEditText;
+    private EditText groupNameEditText;
     private ImageView profileImageView;
     private Button uploadImageButton, saveProfileButton;
+    private Button joinGroupButton, leaveGroupButton;
     private Uri imageUri;
 
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
     private StorageReference storageReference;
+    private String userId;
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
@@ -52,11 +62,15 @@ public class ProfileActivity extends AppCompatActivity {
         profileImageView = findViewById(R.id.profileImageView);
         uploadImageButton = findViewById(R.id.uploadImageButton);
         saveProfileButton = findViewById(R.id.saveProfileButton);
+        groupNameEditText = findViewById(R.id.groupNameEditText);
+        joinGroupButton = findViewById(R.id.joinGroupButton);
+        leaveGroupButton = findViewById(R.id.leaveGroupButton);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        userId = mAuth.getCurrentUser().getUid();
 
         loadUserProfile();
 
@@ -66,7 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Set the title of the toolbar
-        getSupportActionBar().setTitle("Profile");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Profile");
 
         // Enable the back button (optional)
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -83,6 +97,25 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveUserProfile();
+            }
+        });
+
+        joinGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String groupName = groupNameEditText.getText().toString().trim();
+                if (!groupName.isEmpty()) {
+                    joinGroup(groupName);
+                } else {
+                    Toast.makeText(ProfileActivity.this, "Enter a group name", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        leaveGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                leaveGroup();
             }
         });
     }
@@ -181,9 +214,159 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Failed to update profile", Toast.LENGTH_SHORT).show());
     }
 
+    private void joinGroup(String groupName){
+        // Create or join the group
+        db.collection("groups")
+                .whereEqualTo("groupName", groupName)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        // Group exists - join it
+                        String groupId = task.getResult().getDocuments().get(0).getId();
+                        addUserToGroup(groupId);
+                    } else {
+                        // Group does not exist - create and join it
+                        Map<String, Object> groupData = new HashMap<>();
+                        groupData.put("groupName", groupName);
+                        groupData.put("members", new ArrayList<>(Collections.singletonList(userId)));
+
+                        db.collection("groups").add(groupData)
+                                .addOnSuccessListener(documentReference -> addUserToGroup(documentReference.getId()))
+                                .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Failed to create group", Toast.LENGTH_SHORT).show());
+                    }
+                });
+    }
+    private void addUserToGroup(String groupId) {
+        DocumentReference userRef = db.collection("users").document(userId);
+        userRef.update("currentGroupId", groupId)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(ProfileActivity.this, "Joined group", Toast.LENGTH_SHORT).show();
+                    db.collection("groups").document(groupId)
+                            .update("members", FieldValue.arrayUnion(userId));
+                })
+                .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Failed to join group", Toast.LENGTH_SHORT).show());
+    }
+
+    private void leaveGroup() {
+        DocumentReference userRef = db.collection("users").document(userId);
+
+        userRef.get().addOnSuccessListener(documentSnapshot -> {
+            String groupId = documentSnapshot.getString("currentGroupId");
+
+            if (groupId != null) {
+                userRef.update("currentGroupId", null)
+                        .addOnSuccessListener(aVoid -> {
+                            db.collection("groups").document(groupId)
+                                    .update("members", FieldValue.arrayRemove(userId));
+                            Toast.makeText(ProfileActivity.this, "Left group", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Failed to leave group", Toast.LENGTH_SHORT).show());
+            } else {
+                Toast.makeText(ProfileActivity.this, "Not part of any group", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 }
+
+//public class ProfileActivity extends AppCompatActivity {
+//
+//    private EditText groupNameEditText;
+//    private Button joinGroupButton, leaveGroupButton;
+//    private FirebaseAuth mAuth;
+//    private FirebaseFirestore db;
+//    private String userId;
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_profile);
+//
+//        groupNameEditText = findViewById(R.id.groupNameEditText);
+//        joinGroupButton = findViewById(R.id.joinGroupButton);
+//        leaveGroupButton = findViewById(R.id.leaveGroupButton);
+//
+//        mAuth = FirebaseAuth.getInstance();
+//        db = FirebaseFirestore.getInstance();
+//        userId = mAuth.getCurrentUser().getUid();
+//
+//        joinGroupButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String groupName = groupNameEditText.getText().toString().trim();
+//                if (!groupName.isEmpty()) {
+//                    joinGroup(groupName);
+//                } else {
+//                    Toast.makeText(ProfileActivity.this, "Enter a group name", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//
+//        leaveGroupButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                leaveGroup();
+//            }
+//        });
+//    }
+//
+//    private void joinGroup(String groupName) {
+//        // Create or join the group
+//        db.collection("groups")
+//                .whereEqualTo("groupName", groupName)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+//                        // Group exists - join it
+//                        String groupId = task.getResult().getDocuments().get(0).getId();
+//                        addUserToGroup(groupId);
+//                    } else {
+//                        // Group does not exist - create and join it
+//                        Map<String, Object> groupData = new HashMap<>();
+//                        groupData.put("groupName", groupName);
+//                        groupData.put("members", new ArrayList<>(Collections.singletonList(userId)));
+//
+//                        db.collection("groups").add(groupData)
+//                                .addOnSuccessListener(documentReference -> addUserToGroup(documentReference.getId()))
+//                                .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Failed to create group", Toast.LENGTH_SHORT).show());
+//                    }
+//                });
+//    }
+//
+//    private void addUserToGroup(String groupId) {
+//        DocumentReference userRef = db.collection("users").document(userId);
+//        userRef.update("currentGroupId", groupId)
+//                .addOnSuccessListener(aVoid -> {
+//                    Toast.makeText(ProfileActivity.this, "Joined group", Toast.LENGTH_SHORT).show();
+//                    db.collection("groups").document(groupId)
+//                            .update("members", FieldValue.arrayUnion(userId));
+//                })
+//                .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Failed to join group", Toast.LENGTH_SHORT).show());
+//    }
+//
+//    private void leaveGroup() {
+//        DocumentReference userRef = db.collection("users").document(userId);
+//
+//        userRef.get().addOnSuccessListener(documentSnapshot -> {
+//            String groupId = documentSnapshot.getString("currentGroupId");
+//
+//            if (groupId != null) {
+//                userRef.update("currentGroupId", null)
+//                        .addOnSuccessListener(aVoid -> {
+//                            db.collection("groups").document(groupId)
+//                                    .update("members", FieldValue.arrayRemove(userId));
+//                            Toast.makeText(ProfileActivity.this, "Left group", Toast.LENGTH_SHORT).show();
+//                        })
+//                        .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Failed to leave group", Toast.LENGTH_SHORT).show());
+//            } else {
+//                Toast.makeText(ProfileActivity.this, "Not part of any group", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+//}
+    

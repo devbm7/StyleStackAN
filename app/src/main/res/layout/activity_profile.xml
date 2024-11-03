@@ -71,4 +71,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
+
+    <EditText
+        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Group Name"
+        android:layout_width="0dp"
+        android:minHeight="48dp"
+        android:id="@+id/groupNameEditText"
+        app:layout_constraintTop_toBottomOf="@+id/saveProfileButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/sf" />
+    <Button
+        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        android:text="Create Group"
+        android:layout_width="wrap_content"
+        android:id="@+id/joinGroupButton"
+        android:fontFamily="@font/sf"
+        app:layout_constraintTop_toBottomOf="@+id/groupNameEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+        android:id="@+id/leaveGroupButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Leave Group"
+        android:fontFamily="@font/sf"
+        app:layout_constraintTop_toBottomOf="@id/joinGroupButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

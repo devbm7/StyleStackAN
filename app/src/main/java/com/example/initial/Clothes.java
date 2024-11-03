@@ -5,6 +5,7 @@ public class Clothes {
     private String name;
     private String category;
     private String imageUrl;
+    private String ownerName;
     private boolean inLaundry;
     private boolean selected; // For laundry selection
 
@@ -50,5 +51,13 @@ public class Clothes {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String s) {
+        this.ownerName = s;
     }
 }

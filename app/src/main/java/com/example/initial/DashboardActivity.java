@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class DashboardActivity extends AppCompatActivity {
 
     private Button uploadClothesButton, viewClothesButton, manageLaundryButton, removeClothesButton;
-    private Button profileButton, viewLaundryButton;
+    private Button profileButton, viewLaundryButton, viewGroupLaundryButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,9 +20,9 @@ public class DashboardActivity extends AppCompatActivity {
         viewClothesButton = findViewById(R.id.viewClothesButton);
         manageLaundryButton = findViewById(R.id.manageLaundryButton);
         viewLaundryButton = findViewById(R.id.viewLaundryButton);
+        viewGroupLaundryButton = findViewById(R.id.viewGroupLaundryButton);
         removeClothesButton = findViewById(R.id.removeClothesButton);
         profileButton = findViewById(R.id.profileButton);
-
 
         // Set up the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -61,6 +61,12 @@ public class DashboardActivity extends AppCompatActivity {
                 // Navigate to LaundryActivity
                 startActivity(new Intent(DashboardActivity.this, ViewLaundryActivity.class));
             }
+        });
+        viewGroupLaundryButton.setOnClickListener(new View.OnClickListener(){
+           @Override
+           public void onClick(View view){
+               startActivity(new Intent(DashboardActivity.this, ViewGroupLaundryActivity.class));
+           }
         });
         removeClothesButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -32,5 +32,6 @@
         <activity android:name=".ProfileActivity"/>
         <activity android:name=".ClothesDetailsActivity" />
         <activity android:name=".ViewLaundryActivity" />
+        <activity android:name=".ViewGroupLaundryActivity"/>
     </application>
 </manifest>

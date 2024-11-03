@@ -92,6 +92,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <Button
+                android:id="@+id/viewGroupLaundryButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_marginTop="16dp"
+                android:text="View Clothes in Group Laundry"
+                android:background="@drawable/button_background"
+                android:fontFamily="@font/sf"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                app:layout_constraintTop_toBottomOf="@id/viewLaundryButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
 
             <Button
                 android:id="@+id/removeClothesButton"
@@ -104,7 +119,7 @@
                 android:textColor="@android:color/white"
                 android:fontFamily="@font/sf"
                 android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/viewLaundryButton"
+                app:layout_constraintTop_toBottomOf="@id/viewGroupLaundryButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
