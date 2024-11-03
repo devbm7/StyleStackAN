@@ -37,6 +37,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Navigate to UploadClothesActivity
                 startActivity(new Intent(DashboardActivity.this, UploadClothesActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -44,7 +45,10 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Navigate to ViewClothesActivity
-                startActivity(new Intent(DashboardActivity.this, ViewClothesActivity.class));
+                Intent intent = new Intent(DashboardActivity.this, ViewClothesActivity.class);
+                startActivity(intent);
+//                overridePendingTransition(R.anim.fade_in, R.anim.fade_out); // Apply animations
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -53,6 +57,7 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Navigate to LaundryActivity
                 startActivity(new Intent(DashboardActivity.this, LaundryActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         viewLaundryButton.setOnClickListener(new View.OnClickListener() {
@@ -60,25 +65,34 @@ public class DashboardActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Navigate to LaundryActivity
                 startActivity(new Intent(DashboardActivity.this, ViewLaundryActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         viewGroupLaundryButton.setOnClickListener(new View.OnClickListener(){
            @Override
            public void onClick(View view){
                startActivity(new Intent(DashboardActivity.this, ViewGroupLaundryActivity.class));
+               overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
            }
         });
         removeClothesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(DashboardActivity.this, RemoveClothesActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(DashboardActivity.this, ProfileActivity.class));
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right); // Apply reverse transition
     }
 }

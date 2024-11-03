@@ -24,11 +24,12 @@ public class SplashActivity extends AppCompatActivity {
         appNameTextView = findViewById(R.id.appNameTextView);
         animateAppName();
 
-        // Wait for animation to complete, then start main activity
+        // Wait for animation to complete, then start login activity
         new Handler().postDelayed(() -> {
             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             finish();
-        }, 3000); // Adjust delay as needed
+        }, 2500); // Adjust delay as needed
     }
 
     private void animateAppName() {

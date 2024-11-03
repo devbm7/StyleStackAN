@@ -110,6 +110,13 @@ public class ViewLaundryActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> Toast.makeText(ViewLaundryActivity.this, "Failed to clear clothes from laundry", Toast.LENGTH_SHORT).show());
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right); // Apply reverse transition
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

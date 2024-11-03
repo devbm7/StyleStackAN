@@ -76,7 +76,9 @@ public class RegisterActivity extends AppCompatActivity {
                             saveUserData(userId, firstName, lastName);
                         }
                         Toast.makeText(RegisterActivity.this, "Registration Successful.", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(RegisterActivity.this, DashboardActivity.class));
+                        Intent intent = new Intent(RegisterActivity.this, DashboardActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         finish();
                     } else {
                         Toast.makeText(RegisterActivity.this, "Registration failed.", Toast.LENGTH_SHORT).show();
@@ -90,5 +92,10 @@ public class RegisterActivity extends AppCompatActivity {
         userData.put("groupId", null);
         db.collection("users").document(userId).set(userData)
                 .addOnFailureListener(e -> Toast.makeText(RegisterActivity.this, "Failed to save user data", Toast.LENGTH_SHORT).show());
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in_reverse, R.anim.fade_out_reverse); // Apply reverse animations
     }
 }
