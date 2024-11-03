@@ -80,6 +80,5 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(DashboardActivity.this, ProfileActivity.class));
             }
         });
-
     }
 }
