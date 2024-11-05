@@ -26,9 +26,17 @@
         android:id="@+id/chooseImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="0dp"
         android:background="@drawable/button_background"
         android:text="Choose Image"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"/>
+    <Button
+        android:id="@+id/generateAIImage"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:background="@drawable/button_background"
+        android:text="Generate AI Image"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"/>
 
