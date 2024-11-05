@@ -23,11 +23,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,19 +37,16 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-
-
 
 public class UploadClothesActivity extends AppCompatActivity {
 
     private ImageView clothesImageView;
     private EditText clothesNameEditText;
     private Spinner clothesCategorySpinner;
-    private Button uploadButton, chooseImageButton, generateImageButton;
+    private Button uploadButton, chooseImageButton, generateAIImageButton;
     private Uri imageUri;
-    private String generatedImageUrl;
+    private Bitmap aiGeneratedBitmap;  // Store the generated AI Bitmap
+    private boolean isAIGeneratedImage = false;
 
     private FirebaseFirestore db;
     private FirebaseStorage storage;
@@ -67,13 +61,15 @@ public class UploadClothesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_clothes);
 
+        // Initialize UI components
         clothesImageView = findViewById(R.id.clothesImageView);
         clothesNameEditText = findViewById(R.id.clothesNameEditText);
         clothesCategorySpinner = findViewById(R.id.clothesCategorySpinner);
         uploadButton = findViewById(R.id.uploadButton);
         chooseImageButton = findViewById(R.id.chooseImageButton);
-        generateImageButton = findViewById(R.id.generateAIImage);
+        generateAIImageButton = findViewById(R.id.generateAIImage);
 
+        // Initialize Firebase instances
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -92,34 +88,21 @@ public class UploadClothesActivity extends AppCompatActivity {
         clothesCategorySpinner.setAdapter(adapter);
         clothesCategorySpinner.setSelection(0);
 
-        // Image selection button
-        chooseImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chooseImage();
-            }
-        });
+        // Image selection from gallery
+        chooseImageButton.setOnClickListener(view -> chooseImage());
 
         // AI image generation button
-        generateImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String clothesName = clothesNameEditText.getText().toString().trim();
-                if (clothesName.isEmpty()) {
-                    Toast.makeText(UploadClothesActivity.this, "Please enter a clothing name to generate an image", Toast.LENGTH_SHORT).show();
-                } else {
-                    generateAIImage(clothesName);
-                }
+        generateAIImageButton.setOnClickListener(view -> {
+            String clothesName = clothesNameEditText.getText().toString().trim();
+            if (clothesName.isEmpty()) {
+                Toast.makeText(UploadClothesActivity.this, "Please enter a name for the clothes to generate an image", Toast.LENGTH_SHORT).show();
+            } else {
+                generateAIImage(clothesName);
             }
         });
 
-        // Upload data button
-        uploadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uploadClothesData();
-            }
-        });
+        // Upload button handler
+        uploadButton.setOnClickListener(view -> uploadClothesData());
     }
 
     private void chooseImage() {
@@ -134,30 +117,29 @@ public class UploadClothesActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
-            generatedImageUrl = null;  // Clear generated URL if a new image is chosen
+            isAIGeneratedImage = false;
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
                 clothesImageView.setImageBitmap(bitmap);
             } catch (IOException e) {
-                e.printStackTrace();
+                Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-
-    // Update method to handle binary response data
     private void generateAIImage(String prompt) {
-        String apiKey = "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"; // Replace with your actual API key
+        String apiKey = "hf_xxxxxxxxxxxxxxxxxxxxxxxxxx";
         String url = "https://api-inference.huggingface.co/models/prompthero/openjourney";
 
         OkHttpClient client = new OkHttpClient();
-        String jsonBody = "{ \"inputs\": \"" + prompt + "\" }";
+        String specificPrompt = "A " + prompt + " lying on a plain white background";
+        String jsonBody = "{ \"inputs\": \"" + specificPrompt + "\" }";
 
         Request request = new Request.Builder()
                 .url(url)
                 .post(RequestBody.create(jsonBody, MediaType.parse("application/json")))
                 .addHeader("Authorization", "Bearer " + apiKey)
-                .addHeader("Content-Type", "application/json") // Explicitly set Content-Type
+                .addHeader("Content-Type", "application/json")
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -169,16 +151,13 @@ public class UploadClothesActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful() && response.body() != null) {
-                    // Read the response as a byte array
                     byte[] imageBytes = response.body().bytes();
-
-                    // Decode the byte array into a Bitmap
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-
-                    // Check if the Bitmap was successfully created
-                    if (bitmap != null) {
-                        runOnUiThread(() -> clothesImageView.setImageBitmap(bitmap));
-                        imageUri = null;  // Clear imageUri, as we're using the generated image
+                    aiGeneratedBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    if (aiGeneratedBitmap != null) {
+                        runOnUiThread(() -> {
+                            clothesImageView.setImageBitmap(aiGeneratedBitmap);
+                            isAIGeneratedImage = true;
+                        });
                     } else {
                         runOnUiThread(() -> Toast.makeText(UploadClothesActivity.this, "Error decoding image", Toast.LENGTH_SHORT).show());
                     }
@@ -189,63 +168,70 @@ public class UploadClothesActivity extends AppCompatActivity {
         });
     }
 
-    private String parseImageUrl(String jsonResponse) throws JSONException {
-        JSONObject jsonObject = new JSONObject(jsonResponse);
-        return jsonObject.getString("imageUrl");  // Adjust based on API response format
-    }
-
-    private void loadImageIntoImageView(String imageUrl) {
-        Picasso.get().load(imageUrl).into(clothesImageView);
-    }
-
     private void uploadClothesData() {
         final String clothesName = clothesNameEditText.getText().toString().trim();
         final String clothesCategory = clothesCategorySpinner.getSelectedItem().toString();
 
-        if ((imageUri == null && generatedImageUrl == null) || clothesName.isEmpty()) {
+        if ((imageUri == null && !isAIGeneratedImage) || clothesName.isEmpty()) {
             Toast.makeText(UploadClothesActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (imageUri != null) {
-            uploadImageToFirebase();
-        } else if (generatedImageUrl != null) {
-            saveClothesDataToFirestore(generatedImageUrl);
-        }
-    }
-
-    private void uploadImageToFirebase() {
         final String imageId = UUID.randomUUID().toString();
         final StorageReference ref = storageReference.child("clothes_images/" + imageId);
 
-        ref.putFile(imageUri)
-                .addOnSuccessListener(taskSnapshot -> ref.getDownloadUrl().addOnSuccessListener(uri -> {
-                    saveClothesDataToFirestore(uri.toString());
-                }))
-                .addOnFailureListener(e -> Toast.makeText(UploadClothesActivity.this, "Failed to upload image", Toast.LENGTH_SHORT).show());
-    }
+        if (isAIGeneratedImage && aiGeneratedBitmap != null) {
+            // Convert Bitmap to byte array
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            aiGeneratedBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] data = baos.toByteArray();
 
-    private void saveClothesDataToFirestore(String imageUrl) {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            String userId = user.getUid();
-            String imageId = UUID.randomUUID().toString();
+            // Upload byte array to Firebase
+            ref.putBytes(data)
+                    .addOnSuccessListener(taskSnapshot -> ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            Map<String, Object> clothesData = new HashMap<>();
+                            clothesData.put("id", imageId);
+                            clothesData.put("name", clothesName);
+                            clothesData.put("category", clothesCategory);
+                            clothesData.put("imageUrl", uri.toString());
+                            clothesData.put("userId", user.getUid());
+                            clothesData.put("inLaundry", false);
 
-            Map<String, Object> clothesData = new HashMap<>();
-            clothesData.put("id", imageId);
-            clothesData.put("name", clothesNameEditText.getText().toString().trim());
-            clothesData.put("category", clothesCategorySpinner.getSelectedItem().toString());
-            clothesData.put("imageUrl", imageUrl);
-            clothesData.put("userId", userId);
-            clothesData.put("inLaundry", false);
+                            db.collection("clothes").document(imageId)
+                                    .set(clothesData)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(UploadClothesActivity.this, "Clothes uploaded successfully", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e -> Toast.makeText(UploadClothesActivity.this, "Failed to upload clothes data", Toast.LENGTH_SHORT).show());
+                        }
+                    }))
+                    .addOnFailureListener(e -> Toast.makeText(UploadClothesActivity.this, "Failed to upload AI-generated image", Toast.LENGTH_SHORT).show());
+        } else if (!isAIGeneratedImage) {
+            ref.putFile(imageUri)
+                    .addOnSuccessListener(taskSnapshot -> ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if (user != null) {
+                            Map<String, Object> clothesData = new HashMap<>();
+                            clothesData.put("id", imageId);
+                            clothesData.put("name", clothesName);
+                            clothesData.put("category", clothesCategory);
+                            clothesData.put("imageUrl", uri.toString());
+                            clothesData.put("userId", user.getUid());
+                            clothesData.put("inLaundry", false);
 
-            db.collection("clothes").document(imageId)
-                    .set(clothesData)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(UploadClothesActivity.this, "Clothes uploaded successfully", Toast.LENGTH_SHORT).show();
-                        finish();
-                    })
-                    .addOnFailureListener(e -> Toast.makeText(UploadClothesActivity.this, "Failed to upload clothes data", Toast.LENGTH_SHORT).show());
+                            db.collection("clothes").document(imageId)
+                                    .set(clothesData)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(UploadClothesActivity.this, "Clothes uploaded successfully", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e -> Toast.makeText(UploadClothesActivity.this, "Failed to upload clothes data", Toast.LENGTH_SHORT).show());
+                        }
+                    }))
+                    .addOnFailureListener(e -> Toast.makeText(UploadClothesActivity.this, "Failed to upload image", Toast.LENGTH_SHORT).show());
         }
     }
 
