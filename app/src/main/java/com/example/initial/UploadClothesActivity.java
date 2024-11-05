@@ -145,7 +145,7 @@ public class UploadClothesActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                runOnUiThread(() -> Toast.makeText(UploadClothesActivity.this, "Failed to generate image", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> Toast.makeText(UploadClothesActivity.this, "Failed to generate image. Try Loading prompthero/openjourney to inference on HF.", Toast.LENGTH_SHORT).show());
             }
 
             @Override
