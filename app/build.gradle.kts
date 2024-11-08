@@ -1,10 +1,7 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
 }
-
 
 
 android {
@@ -20,7 +17,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+//    buildFeatures {
+//        BuildConfig = true
+//    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -48,6 +47,7 @@ dependencies {
     implementation (libs.picasso)
     implementation(libs.core.animation)
     implementation(libs.okhttp)
+    implementation(libs.support.annotations)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

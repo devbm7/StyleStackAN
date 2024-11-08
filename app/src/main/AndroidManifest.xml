@@ -41,4 +41,7 @@
         <activity android:name=".ViewLaundryActivity" />
         <activity android:name=".ViewGroupLaundryActivity"/>
     </application>
+    <meta-data
+        android:name="HUGGING_FACE_API_KEY"
+        android:value="${HUGGING_FACE_API_KEY}"/>
 </manifest>

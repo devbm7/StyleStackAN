@@ -128,7 +128,7 @@ public class UploadClothesActivity extends AppCompatActivity {
     }
 
     private void generateAIImage(String prompt) {
-        String apiKey = "hf_xxxxxxxxxxxxxxxxxxxxxxxxxx";
+        String apiKey = "hf_xxxxxxxxxxxxxxxxxxxxxxxxx";
         String url = "https://api-inference.huggingface.co/models/prompthero/openjourney";
 
         OkHttpClient client = new OkHttpClient();
